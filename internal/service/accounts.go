@@ -7,35 +7,35 @@ import (
 )
 
 type Account interface {
-	GetAccount(ctx context.Context, id string) (*service_model.Account, error)
+	GetAccount(ctx context.Context, id int64) (*service_model.Account, error)
 	GetAccounts(ctx context.Context) ([]*service_model.Account, error)
 	CreateAccount(ctx context.Context, account *service_model.Account) error
 	UpdateAccount(ctx context.Context, account *service_model.Account) error
-	DeleteAccount(ctx context.Context, id string) error
+	DeleteAccount(ctx context.Context, id int64) error
 }
 
 type accountService struct {
 	accountRepo repository.Account
 }
 
-func (a *accountService) GetAccount(ctx context.Context, id string) (*service_model.Account, error) {
-	return nil, nil
+func (a *accountService) GetAccount(ctx context.Context, id int64) (*service_model.Account, error) {
+	return a.accountRepo.GetAccount(ctx, id)
 }
 
 func (a *accountService) GetAccounts(ctx context.Context) ([]*service_model.Account, error) {
-	return nil, nil
+	return a.accountRepo.GetAccounts(ctx)
 }
 
 func (a *accountService) CreateAccount(ctx context.Context, account *service_model.Account) error {
-	return nil
+	return a.accountRepo.CreateAccount(ctx, account)
 }
 
 func (a *accountService) UpdateAccount(ctx context.Context, account *service_model.Account) error {
-	return nil
+	return a.accountRepo.UpdateAccount(ctx, account)
 }
 
-func (a *accountService) DeleteAccount(ctx context.Context, id string) error {
-	return nil
+func (a *accountService) DeleteAccount(ctx context.Context, id int64) error {
+	return a.accountRepo.DeleteAccount(ctx, id)
 }
 
 func NewAccountService(accountRepo repository.Account) Account {
