@@ -1,6 +1,3 @@
-
-include app.env
-
 MIGRATE_PATH = ./scripts/migrations
 DATABASE_URL = ${DB_SOURCE}
 
