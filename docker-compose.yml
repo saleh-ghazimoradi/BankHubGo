@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16.3
+    container_name: postgres-db
+    env_file:
+      - app.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5430:5432"
+
+volumes:
+  db-data:
