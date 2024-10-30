@@ -21,17 +21,14 @@ dockerdown:
 	docker compose --env-file app.env down
 
 migrate-up:
-	@echo "migrate up"
 	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" up
 
 
 migrate-down:
-	@echo "migrate down"
 	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" down
 
 
 migrate-drop:
-	@echo "migrate drop"
 	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" drop
 
 .PHONY: format vet dockerup dockerdown migrate-up migrate-down migrate-drop

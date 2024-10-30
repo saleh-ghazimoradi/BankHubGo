@@ -55,6 +55,5 @@ jobs:
 
       - name: Run migrations
         env:
-          DB_DRIVER: ${{ secrets.DB_DRIVER }}
           DB_SOURCE: ${{ secrets.DB_SOURCE }}
         run: make migrate-up
