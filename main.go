@@ -1,7 +1,11 @@
+/*
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+
+*/
 package main
 
-import "fmt"
+import "github.com/saleh-ghazimoradi/BankHubGo/cmd"
 
 func main() {
-	fmt.Println("Hello from D.H")
+	cmd.Execute()
 }
