@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -15,8 +12,7 @@ import (
 )
 
 var (
-	cfgFile   string
-	appConfig config.Config // Global variable to store config
+	cfgFile string
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -25,11 +21,7 @@ var rootCmd = &cobra.Command{
 	Short: "A simple bank management system",
 	Long: `BankHubGo is a streamlined bank management service built with Go, 
 designed to introduce core backend development topics and modern tools. 
-This project covers the fundamentals required to build scalable backend services.
-`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+This project covers the fundamentals required to build scalable backend services.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -47,22 +39,21 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is .)")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file path (default is .)")
 	cobra.OnInitialize(
 		initConfig,
-		initLogger, // logger should come after config
+		initLogger, // Logger initialization comes after config
 	)
 }
 
 func initConfig() {
-	var err error
-	appConfig, err = config.LoadingConfig(cfgFile)
+	err := config.LoadingConfig(cfgFile)
 	if err != nil {
 		log.Fatalf("Could not load config: %v", err)
 	}
-	fmt.Printf("Configuration loaded: %+v\n", appConfig) // Print config for verification
+	fmt.Printf("Configuration loaded: %+v\n", config.Appconfig) // Verify config
 }
 
 func initLogger() {
-	logger.LoadLogger(appConfig.LogLevel)
+	logger.LoadLogger(config.Appconfig.LogLevel)
 }

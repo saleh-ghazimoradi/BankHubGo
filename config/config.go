@@ -5,12 +5,15 @@ import (
 	"time"
 )
 
+var Appconfig *Config
+
 type Config struct {
 	DBDriver      string     `mapstructure:"DB_DRIVER"`
 	DBSource      string     `mapstructure:"DB_SOURCE"`
 	ServerAddress string     `mapstructure:"SERVER_ADDRESS"`
 	PostConfig    PostConfig `mapstructure:"POST_CONFIG"`
 	LogLevel      int8       `mapstructure:"LOG_LEVEL"`
+	Env           string     `mapstructure:"ENV"`
 }
 
 type PostConfig struct {
@@ -26,15 +29,23 @@ type PostConfig struct {
 	Timeout      time.Duration `mapstructure:"TIMEOUT"`
 }
 
-func LoadingConfig(path string) (config Config, err error) {
+func LoadingConfig(path string) error {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
-	err = viper.ReadInConfig()
+
+	err := viper.ReadInConfig()
 	if err != nil {
-		return
+		return err
 	}
+
+	var config Config
 	err = viper.Unmarshal(&config)
-	return
+	if err != nil {
+		return err
+	}
+
+	Appconfig = &config
+	return nil
 }
