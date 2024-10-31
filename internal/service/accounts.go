@@ -8,7 +8,7 @@ import (
 
 type Account interface {
 	GetAccount(ctx context.Context, id int64) (*service_model.Account, error)
-	GetAccounts(ctx context.Context) ([]*service_model.Account, error)
+	GetAccounts(ctx context.Context, p service_model.Pagination) ([]*service_model.Account, error)
 	CreateAccount(ctx context.Context, account *service_model.Account) error
 	UpdateAccount(ctx context.Context, account *service_model.Account) error
 	DeleteAccount(ctx context.Context, id int64) error
@@ -22,8 +22,8 @@ func (a *accountService) GetAccount(ctx context.Context, id int64) (*service_mod
 	return a.accountRepo.GetAccount(ctx, id)
 }
 
-func (a *accountService) GetAccounts(ctx context.Context) ([]*service_model.Account, error) {
-	return a.accountRepo.GetAccounts(ctx)
+func (a *accountService) GetAccounts(ctx context.Context, p service_model.Pagination) ([]*service_model.Account, error) {
+	return a.accountRepo.GetAccounts(ctx, p)
 }
 
 func (a *accountService) CreateAccount(ctx context.Context, account *service_model.Account) error {
