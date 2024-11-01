@@ -13,8 +13,8 @@ type Handlers struct {
 func Routes(handler Handlers) http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /accounts", handler.GetAccounts)
 	mux.HandleFunc("GET /accounts/{id}", handler.GetAccount)
+	mux.HandleFunc("GET /accounts", handler.GetAccounts)
 	mux.HandleFunc("POST /accounts", handler.CreateAccount)
 	mux.HandleFunc("PUT /accounts/{id}", handler.UpdateAccount)
 	mux.HandleFunc("DELETE /accounts/{id}", handler.DeleteAccount)

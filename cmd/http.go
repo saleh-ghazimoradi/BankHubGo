@@ -45,7 +45,11 @@ var httpCmd = &cobra.Command{
 		accountHandler := gateway.NewAccountHandler(accountService)
 
 		routeHandlers := gateway.Handlers{
-			GetAccount: accountHandler.GetAccount,
+			GetAccount:    accountHandler.GetAccount,
+			GetAccounts:   accountHandler.GetAccounts,
+			CreateAccount: accountHandler.CreateAccount,
+			UpdateAccount: accountHandler.UpdateAccount,
+			DeleteAccount: accountHandler.DeleteAccount,
 		}
 
 		if err := gateway.Server(gateway.Routes(routeHandlers)); err != nil {
