@@ -46,8 +46,8 @@ func (a *accountRepository) GetAccounts(ctx context.Context, p service_model.Pag
 
 	var accounts []*service_model.Account
 
-	query := `SELECT id, owner, balance, currency, created_at FROM accounts` + p.Sort + `
-	   LIMIT $2 OFFSET $3`
+	query := `SELECT id, owner, balance, currency, created_at FROM accounts ORDER BY created_at ` + p.Sort + `
+	   LIMIT $1 OFFSET $2`
 
 	rows, err := a.db.QueryContext(ctx, query, p.Limit, p.Offset)
 
