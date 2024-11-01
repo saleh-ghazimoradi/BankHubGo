@@ -11,11 +11,9 @@ vet:
 	go vet ./...
 
 dockerup:
-	@echo "docker up"
 	docker compose --env-file app.env up -d
 
 dockerdown:
-	@echo "docker down"
 	docker compose --env-file app.env down
 
 migrate-up:
@@ -29,4 +27,8 @@ migrate-down:
 migrate-drop:
 	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" drop
 
-.PHONY: format vet dockerup dockerdown migrate-up migrate-down migrate-drop
+http:
+	go run . http
+
+
+.PHONY: format vet dockerup dockerdown migrate-up migrate-down migrate-drop http
