@@ -1,8 +1,6 @@
 MIGRATE_PATH = ./scripts/migrations
 DATABASE_URL = ${DB_SOURCE}
 
-include app.env
-export $(shell sed 's/=.*//' app.env)
 
 format:
 	@echo "apply go fmt to the project"
