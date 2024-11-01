@@ -22,7 +22,7 @@ type accountRepository struct {
 func (a *accountRepository) GetAccount(ctx context.Context, id int64) (*service_model.Account, error) {
 	var account service_model.Account
 
-	query := `SELECT id, owner, balance, currency, created_at FROM account WHERE id = $1;`
+	query := `SELECT id, owner, balance, currency, created_at FROM accounts WHERE id = $1;`
 	err := a.db.QueryRowContext(ctx, query, id).Scan(
 		&account.ID,
 		&account.Owner,
@@ -46,7 +46,7 @@ func (a *accountRepository) GetAccounts(ctx context.Context, p service_model.Pag
 
 	var accounts []*service_model.Account
 
-	query := `SELECT id, owner, balance, currency, created_at FROM account` + p.Sort + `
+	query := `SELECT id, owner, balance, currency, created_at FROM accounts` + p.Sort + `
 	   LIMIT $2 OFFSET $3`
 
 	rows, err := a.db.QueryContext(ctx, query, p.Limit, p.Offset)
@@ -79,7 +79,7 @@ func (a *accountRepository) GetAccounts(ctx context.Context, p service_model.Pag
 }
 
 func (a *accountRepository) CreateAccount(ctx context.Context, account *service_model.Account) error {
-	query := `INSERT INTO account (owner, balance, currency) VALUES ($1, $2, $3) RETURNING id, created_at;`
+	query := `INSERT INTO accounts (owner, balance, currency) VALUES ($1, $2, $3) RETURNING id, created_at;`
 
 	err := a.db.QueryRowContext(ctx, query, account.Owner, account.Balance, account.Currency).Scan(&account.ID, &account.CreatedAt)
 	if err != nil {
@@ -89,7 +89,7 @@ func (a *accountRepository) CreateAccount(ctx context.Context, account *service_
 }
 
 func (a *accountRepository) UpdateAccount(ctx context.Context, account *service_model.Account) error {
-	query := `UPDATE account SET balance = $1, currency = $2 WHERE id = $3;`
+	query := `UPDATE accounts SET balance = $1, currency = $2 WHERE id = $3;`
 	res, err := a.db.ExecContext(ctx, query, account.Balance, account.Currency, account.ID)
 	if err != nil {
 		return err
@@ -106,7 +106,7 @@ func (a *accountRepository) UpdateAccount(ctx context.Context, account *service_
 }
 
 func (a *accountRepository) DeleteAccount(ctx context.Context, id int64) error {
-	query := `DELETE FROM account WHERE id = $1;`
+	query := `DELETE FROM accounts WHERE id = $1;`
 	res, err := a.db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
