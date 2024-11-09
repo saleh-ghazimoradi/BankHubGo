@@ -45,5 +45,8 @@ migrate-drop:
 http:
 	go run . http
 
+test:
+	go test -v -cover ./...
 
-.PHONY: format vet dockerup dockerdown migrate-up migrate-down migrate-drop http
+
+.PHONY: format vet dockerup dockerdown migrate-up migrate-down migrate-drop http test
