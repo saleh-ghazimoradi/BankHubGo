@@ -34,7 +34,7 @@ func (a *accountRepository) GetAccount(ctx context.Context, id int64) (*service_
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
-			return nil, errors.New("account not found")
+			return nil, ErrNotFound
 		default:
 			return nil, err
 		}
@@ -89,8 +89,8 @@ func (a *accountRepository) CreateAccount(ctx context.Context, account *service_
 }
 
 func (a *accountRepository) UpdateAccount(ctx context.Context, account *service_model.Account) error {
-	query := `UPDATE accounts SET balance = $1, currency = $2 WHERE id = $3;`
-	res, err := a.db.ExecContext(ctx, query, account.Balance, account.Currency, account.ID)
+	query := `UPDATE accounts SET balance = $1 WHERE id = $2;`
+	res, err := a.db.ExecContext(ctx, query, account.Balance, account.ID)
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,7 @@ func (a *accountRepository) UpdateAccount(ctx context.Context, account *service_
 		return err
 	}
 	if rowsAffected == 0 {
-		return errors.New("account not found")
+		return ErrNotFound
 	}
 	return nil
 }
@@ -118,7 +118,7 @@ func (a *accountRepository) DeleteAccount(ctx context.Context, id int64) error {
 	}
 
 	if rowsAffected == 0 {
-		return errors.New("account not found")
+		return ErrNotFound
 	}
 
 	return nil
