@@ -1,3 +1,8 @@
+ifneq (,$(wildcard ./app.env))
+	include app.env
+	export $(shell sed 's/=.*//' app.env)
+endif
+
 MIGRATE_PATH = ./scripts/migrations
 DATABASE_URL = ${DB_SOURCE}
 
@@ -16,16 +21,26 @@ dockerup:
 dockerdown:
 	docker compose --env-file app.env down
 
-migrate-up:
-	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" up
+migrate-create:
+	@echo "Creating migration files for ${name}..."
+	migrate create -seq -ext=.sql -dir=./scripts/migrations ${name}
 
+migrate-up:
+	@echo "Running up migrations..."
+	migrate -path ${MIGRATE_PATH} -database "${DATABASE_URL}" up
 
 migrate-down:
-	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" down
+	@echo "Rolling back migrations..."
+	@if [ -z "$(n)" ]; then \
+		migrate -path ${MIGRATE_PATH} -database "${DATABASE_URL}" down 1; \
+	else \
+		migrate -path ${MIGRATE_PATH} -database "${DATABASE_URL}" down $(n); \
+	fi
 
 
 migrate-drop:
-	migrate -path $(MIGRATE_PATH) -database "$(DATABASE_URL)" drop
+	@echo "Dropping all migrations..."
+	migrate -path ${MIGRATE_PATH} -database "${DATABASE_URL}" drop -f
 
 http:
 	go run . http
